@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOYSPRINT | Schulprojekt</title>
+<style>
+body, html {margin:0;padding:0;font-family:'Arial',sans-serif;background:#f4f4f4;color:#333;}
+a {color:#2a7f62;text-decoration:none;cursor:pointer;}
+nav{position:sticky;top:0;background:#fff;padding:15px;display:flex;justify-content:center;gap:20px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+nav a{font-weight:bold;}
+section{padding:50px 20px;text-align:center;display:none;}
+.active{display:block;}
+h2{color:#2a7f62;}
+button{padding:10px 20px;margin-top:10px;border:none;background:#2a7f62;color:#fff;font-weight:bold;cursor:pointer;border-radius:5px;}
+button:hover{background:#1b5f45;}
+input,select,textarea{padding:8px;margin:5px;width:220px;border-radius:5px;border:1px solid #ccc;}
+
+/* HERO */
+.hero{position:relative;height:70vh;overflow:hidden;background:#dff0e2;display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.hero h1{font-size:50px;margin-bottom:10px;}
+.hero p{font-size:20px;margin-bottom:10px;max-width:600px;}
+
+/* SHOP DESIGNER */
+.preview{position:relative;width:300px;margin:20px auto;border:2px solid #2a7f62;border-radius:10px;padding:10px;background:#fff;}
+.preview img{width:100%;border-radius:10px;}
+.design-area{position:absolute;top:90px;left:80px;width:140px;height:140px;}
+.design-text{
+  position:absolute;
+  top:0;
+  left:0;
+  font-size:20px;
+  font-weight:bold;
+  color:#2a7f62;
+  text-align:center;
+  width:100%;
+  height:100%;
+  cursor:move;
+}
+.design-area img{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  display:none;
+}
+
+/* PRODUCT SELECT */
+.product-select {margin-bottom:20px;}
+
+/* CHECKOUT */
+.checkout-box{border:1px solid #2a7f62;padding:30px;display:inline-block;margin-top:20px;background:#fff;border-radius:10px;}
+.admin-box{border:2px solid #2a7f62;padding:20px;margin-top:20px;background:#fff;border-radius:10px;}
+
+/* ADMIN GRID */
+#ordersList{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+.admin-design{
+  border:1px solid #2a7f62;
+  padding:5px;
+  background:#fff;
+  border-radius:10px;
+  overflow:hidden;
+}
+.admin-design img{width:100%;border-radius:5px;}
+.admin-design div{text-align:center;}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+<a onclick="showPage('home')">Startseite</a>
+<a onclick="showPage('shop')">Shop</a>
+<a onclick="showPage('about')">Über Uns</a>
+<a onclick="showPage('sustainability')">Nachhaltigkeit</a>
+<a onclick="showPage('checkout')">Checkout</a>
+<a onclick="showPage('contact')">Kontakt</a>
+<a onclick="showAdmin()">Admin</a>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="active hero">
+<h1>GOYSPRINT</h1>
+<p>Nachhaltiges Schulprojekt – Gestalte dein eigenes Produkt!</p>
+<p>Alle Einnahmen werden gespendet.</p>
+<button onclick="scrollToShop()">Jetzt Designen</button>
+</section>
+
+<!-- SHOP -->
+<section id="shop">
+<h2>Design dein Produkt</h2>
+<p>Wähle ein Produkt, lade Text oder Bild hoch und gestalte es individuell.</p>
+<div class="product-select">
+<select id="productSelect" onchange="changeProduct()">
+<option value="tshirt">T-Shirt – 30€</option>
+<option value="longsleeve">Longsleeve – 45€</option>
+<option value="bag">Stofftasche – 20€</option>
+</select>
+</div>
+
+<div class="preview">
+<img id="productImage" src="https://i.imgur.com/5NQzj0V.png" alt="Produkt">
+<div class="design-area" id="designArea">
+<div class="design-text" id="designText">GOYSPRINT</div>
+<img id="designImage">
+</div>
+</div>
+
+<div class="controls">
+<input type="file" id="imageUpload" accept="image/*"><br>
+Text: <input type="text" id="textInput"><br>
+Textfarbe: <input type="color" id="textColor" value="#2a7f62"><br>
+Produktfarbe:
+<select id="productColor">
+<option value="white">Weiß</option>
+<option value="gray">Grau</option>
+<option value="black">Schwarz</option>
+<option value="red">Rot</option>
+<option value="blue">Blau</option>
+</select><br>
+Größe (Text & Bild):
+<input type="range" id="sizeSlider" min="50" max="200" value="100"><br>
+<button onclick="addToCart()">In den Warenkorb</button>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+<h2>Über GOYSPRINT</h2>
+<p>GOYSPRINT ist ein <b>Schulprojekt</b>. Jede Kollektion wird nachhaltig produziert.</p>
+<p>Alle Einnahmen werden an wohltätige Organisationen gespendet.</p>
+</section>
+
+<!-- NACHHALTIGKEIT -->
+<section id="sustainability">
+<h2>Unsere Nachhaltigkeit</h2>
+<p>Produkte aus 100% Bio-Baumwolle, fair produziert und CO₂-neutral transportiert.</p>
+<p>Mit jedem Kauf unterstützt du nachhaltige Mode und Spendenprojekte.</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<h2>Kontakt</h2>
+<p>Email: jts187@yahoo.com</p>
+<p>Bei Fragen oder Rückmeldungen kannst du uns hier erreichen.</p>
+</section>
+
+<!-- CHECKOUT -->
+<section id="checkout">
+<h2>Checkout</h2>
+<div class="checkout-box">
+<p id="cartStatus">Warenkorb leer</p>
+<form id="checkoutForm">
+Name:<br><input type="text" id="name" required><br>
+E-Mail:<br><input type="email" id="email" required><br>
+Straße:<br><input type="text" id="street" required><br>
+PLZ:<br><input type="text" id="zip" required><br>
+Stadt:<br><input type="text" id="city" required><br>
+Land:<br><input type="text" id="country" required><br>
+Zahlungsmethode:<br>
+<select id="paymentMethod">
+<option value="online">Online Zahlung</option>
+<option value="cash">Barzahlung bei Lieferung</option>
+</select><br>
+<p>Lieferzeit: ca. 2 Wochen</p>
+<button type="button" onclick="checkout()">Bestellung abschließen</button>
+</form>
+
+<h3>Bestellung stornieren</h3>
+<p>Order-ID, E-Mail + Grund angeben:</p>
+<input type="text" id="cancelOrderID" placeholder="Order-ID"><br>
+<input type="text" id="cancelEmail" placeholder="Deine E-Mail"><br>
+<textarea id="cancelReason" placeholder="Grund für Stornierung"></textarea><br>
+<button onclick="cancelOrder()">Stornieren</button>
+</div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin">
+<h2>Admin-Bereich</h2>
+<div class="admin-box" id="adminLoginBox">
+<p>Passwort eingeben:</p>
+<input type="password" id="adminPassword">
+<button onclick="checkAdminPassword()">Login</button>
+</div>
+<div class="admin-box" id="adminOrdersBox" style="display:none;">
+<h3>Bestellungen</h3>
+<div id="ordersList"></div>
+<button onclick="logoutAdmin()">Logout</button>
+</div>
+</section>
+
+<script>
+/* NAVIGATION */
+function showPage(page){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(page).classList.add('active');}
+function scrollToShop(){showPage('shop');}
+
+/* PRODUKTDATEN */
+let products = {
+  tshirt:{name:"T-Shirt",price:30,img:"https://i.imgur.com/5NQzj0V.png"},
+  longsleeve:{name:"Longsleeve",price:45,img:"https://i.imgur.com/Abu3wP7.png"},
+  bag:{name:"Stofftasche",price:20,img:"https://i.imgur.com/XiJp9H5.png"}
+};
+let currentProduct="tshirt";
+function changeProduct(){
+  currentProduct=document.getElementById('productSelect').value;
+  document.getElementById('productImage').src=products[currentProduct].img;
+}
+
+/* DRAG & DROP nur für Text */
+let designText=document.getElementById("designText");
+let offsetX, offsetY;
+designText.onmousedown=function(e){
+  offsetX=e.offsetX;
+  offsetY=e.offsetY;
+  document.onmousemove=function(e){
+    designText.style.left=(e.pageX-offsetX-80)+"px";
+    designText.style.top=(e.pageY-offsetY-90)+"px";
+  }
+}
+document.onmouseup=function(){document.onmousemove=null;}
+
+/* IMAGE UPLOAD optional */
+let designImage=document.getElementById("designImage");
+document.getElementById("imageUpload").addEventListener("change",function(e){
+    if(e.target.files.length===0){designImage.style.display="none"; return;}
+    let reader=new FileReader();
+    reader.onload=function(){designImage.src=reader.result; designImage.style.display="block";}
+    reader.readAsDataURL(e.target.files[0]);
+});
+
+/* TEXT + COLOR + SIZE */
+document.getElementById("textInput").addEventListener("input",function(){designText.innerText=this.value;});
+document.getElementById("textColor").addEventListener("input",function(){designText.style.color=this.value;});
+document.getElementById("sizeSlider").addEventListener("input",function(){
+    let size=this.value;
+    designText.style.fontSize=(size/2)+"px";
+    designImage.style.width=size+"px";
+});
+
+/* PRODUCT COLOR */
+document.getElementById("productColor").addEventListener("change",function(){
+  let color=this.value;
+  if(color==="white") document.getElementById("productImage").style.background="#fff";
+  else if(color==="gray") document.getElementById("productImage").style.background="#ccc";
+  else if(color==="black") document.getElementById("productImage").style.background="#000";
+  else if(color==="red") document.getElementById("productImage").style.background="#ff0000";
+  else if(color==="blue") document.getElementById("productImage").style.background="#0077ff";
+});
+
+/* WARENKORB & LOCALSTORAGE */
+let cart=JSON.parse(localStorage.getItem('cart'))||[];
+let orderHistory=JSON.parse(localStorage.getItem('orders'))||[];
+function saveOrders(){localStorage.setItem('orders',JSON.stringify(orderHistory));}
+function saveCart(){localStorage.setItem('cart',JSON.stringify(cart));}
+function addToCart(){
+    let item={
+        product:currentProduct,
+        design:designText.innerText,
+        color:designText.style.color,
+        imageSrc:designImage.src,
+        size:designText.style.fontSize,
+        posLeft:designText.style.left,
+        posTop:designText.style.top
+    };
+    cart.push(item); saveCart();
+    document.getElementById('cartStatus').innerText=cart.length+"x "+products[currentProduct].name+" im Warenkorb";
+}
+
+/* CHECKOUT */
+function checkout(){
+  let name=document.getElementById("name").value;
+  let email=document.getElementById("email").value;
+  if(!email){alert("Bitte E-Mail angeben!"); return;}
+  
+  if(cart.length>0){
+    let orderID="GS"+Math.floor(Math.random()*1000000);
+    let payment=document.getElementById("paymentMethod").value;
+    let paymentText=payment==="online"?"Online Zahlung":"Barzahlung bei Lieferung";
+
+    orderHistory.push({id:orderID,name,email,products:cart.map(c=>({...c})),payment:paymentText,date:new Date().toLocaleString()});
+    saveOrders();
+
+    alert(`✅ Bestellung erfolgreich! Order-ID: ${orderID}\nZahlungsmethode: ${paymentText}\nLieferzeit: ca. 2 Wochen\nWir haben dir die Order-ID an ${email} geschickt.`);
+    cart=[]; saveCart(); document.getElementById('cartStatus').innerText="Warenkorb leer"; document.getElementById("checkoutForm").reset();
+  }else alert("Warenkorb ist leer!");
+}
+
+/* STORNIEREN */
+function cancelOrder(){
+  let orderID=document.getElementById("cancelOrderID").value;
+  let email=document.getElementById("cancelEmail").value;
+  let reason=document.getElementById("cancelReason").value;
+  if(orderID && email && reason){
+    alert(`✅ Stornierungsanfrage gesendet.\nOrder-ID: ${orderID}\nWir werden uns unter ${email} bei dir melden.\nGrund: ${reason}`);
+    console.log(`📝 Stornierung: Order-ID ${orderID} | ${email} | Grund: ${reason}`);
+    document.getElementById("cancelOrderID").value=""; document.getElementById("cancelEmail").value=""; document.getElementById("cancelReason").value="";
+  }else alert("Bitte Order-ID, E-Mail und Grund angeben!");
+}
+
+/* ADMIN */
+const ADMIN_PASS="goy123";
+function showAdmin(){showPage('admin'); document.getElementById('adminLoginBox').style.display="block"; document.getElementById('adminOrdersBox').style.display="none";}
+function checkAdminPassword(){
+  let pass=document.getElementById('adminPassword').value;
+  if(pass===ADMIN_PASS){document.getElementById('adminLoginBox').style.display="none"; document.getElementById('adminOrdersBox').style.display="block"; displayOrders();}
+  else alert("Falsches Passwort!");
+}
+function logoutAdmin(){document.getElementById('adminLoginBox').style.display="block"; document.getElementById('adminOrdersBox').style.display="none";}
+function displayOrders(){
+  let list=document.getElementById('ordersList'); list.innerHTML="";
+  if(orderHistory.length===0){list.innerHTML="<p>Keine Bestellungen vorhanden</p>"; return;}
+  orderHistory.forEach((o,i)=>{
+    list.innerHTML+=`<div class="admin-design">
+      <p><b>Order-ID:</b> ${o.id}</p>
+      <p><b>Kunde:</b> ${o.name} | ${o.email}</p>
+      ${o.products.map(p=>`<p><b>Produkt:</b> ${products[p.product].name}</p>
+      <div style="position:relative;width:150px;height:150px;border:1px solid #2a7f62;background:#fff;">
+        ${p.imageSrc?`<img src="${p.imageSrc}" style="position:absolute;left:${p.posLeft};top:${p.posTop};width:50px;">`:''}
+        <div style="color:${p.color};font-size:${p.size};position:absolute;left:${p.posLeft};top:${p.posTop};">${p.design}</div>
+      </div>`).join("")}
+    </div>`;
+  });
+}
+
+// Initial
+displayOrders();
+document.getElementById('cartStatus').innerText = cart.length>0 ? cart.length+"x Produkte im Warenkorb" : "Warenkorb leer";
+</script>
+</body>
+</html>
